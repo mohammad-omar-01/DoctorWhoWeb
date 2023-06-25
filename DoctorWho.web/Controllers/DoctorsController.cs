@@ -21,7 +21,7 @@ namespace DoctorWho.web.Controllers
         {
             _doctorRepository = doctorRepository;
             _mapper = mapper;
-            _doctorDtoValidtor=doctorDtoValidator;
+            _doctorDtoValidtor = doctorDtoValidator;
 
 
         }
@@ -31,7 +31,7 @@ namespace DoctorWho.web.Controllers
         {
             var doctors = _doctorRepository.GetAllDoctors();
 
-            return Ok(doctors.Select(doctor=>_mapper.Map<DoctorDto>(doctor)));
+            return Ok(doctors.Select(doctor => _mapper.Map<DoctorDto>(doctor)));
         }
         [HttpPost]
         public ActionResult AddDoctor(DoctorDto doctorDto)
@@ -47,7 +47,36 @@ namespace DoctorWho.web.Controllers
             _doctorRepository.AddDoctor(doctor);
             var upsertedDoctorDto = _mapper.Map<DoctorDto>(doctor);
 
-            return Created("Succesfully created",upsertedDoctorDto);
+            return Created("Succesfully created", upsertedDoctorDto);
+        }
+        [HttpPut("/Doctors/{DoctorId}")]
+        public ActionResult EditDoctor(int DoctorId,[FromBody] DoctorDto doctorDto)
+        {
+            ValidationResult validationResult = _doctorDtoValidtor.Validate(doctorDto);
+
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors);
+            }
+            var existingDoctor = _doctorRepository.GetDoctorById(DoctorId);
+
+            if (existingDoctor != null)
+            {
+                var updatedDoctor = _mapper.Map(doctorDto, existingDoctor);
+                _doctorRepository.UpdateDoctor(updatedDoctor);
+            }
+            else
+            {
+                var newDoctor = _mapper.Map<Doctor>(doctorDto);
+                newDoctor.DoctorId = DoctorId;
+                _doctorRepository.CreateDoctor(newDoctor);
+
+
+            }
+            var upsertedDoctor = _doctorRepository.GetDoctorById(DoctorId);
+            var upsertedDoctorDto = _mapper.Map<DoctorDto>(upsertedDoctor);
+
+            return Ok( upsertedDoctorDto);
         }
 
     }
