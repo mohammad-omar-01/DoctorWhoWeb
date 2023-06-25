@@ -79,5 +79,17 @@ namespace DoctorWho.web.Controllers
             return Ok( upsertedDoctorDto);
         }
 
+        [HttpDelete("/Doctors/{DoctorId}")]
+        public ActionResult DeleteDoctor(int DoctorId)
+        {
+            var count=_doctorRepository.DeleteDoctor(DoctorId);
+            if (count == 1) { 
+            return NoContent();
+            }
+            return NotFound();
+
+        }
+
+
     }
 }
