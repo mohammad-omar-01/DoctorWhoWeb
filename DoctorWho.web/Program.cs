@@ -1,6 +1,8 @@
 using DoctorWho.Db;
 using DoctorWho.Db.Repositories;
 using DoctorWho.web.Mappers;
+using DoctorWho.Web.Validators;
+using FluentAssertions.Common;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +18,8 @@ builder.Services.AddScoped<EnemyRepository>();
 builder.Services.AddScoped<CompanionRepository>();
 builder.Services.AddScoped<EpisodeRepository>();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
+builder.Services.AddTransient<DoctorDtoValidator>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

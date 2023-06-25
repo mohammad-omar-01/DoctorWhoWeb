@@ -8,7 +8,8 @@ namespace DoctorWho.web.Mappers
         public AutoMapperProfile()
         {
 
-            CreateMap<Doctor, DoctorDto>();
+            CreateMap<Doctor, DoctorDto>().ForMember(doctor=>doctor.BirthDate,opt=>opt.MapFrom(src=>src.BirthDate.Date));
+
             CreateMap<DoctorDto, Doctor>();
 
         }
