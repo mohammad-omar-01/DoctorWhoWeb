@@ -1,11 +1,10 @@
 ﻿using AutoMapper;
 using DoctorWho.Db.Models;
 using DoctorWho.DTOs.Models;
-using DoctorWho.web.Controllers;
 
 namespace DoctorWho.web.Mappers
 {
-    internal class AutoMapperProfile : Profile
+    public class AutoMapperProfile : Profile
     {
         public AutoMapperProfile()
         {
@@ -20,6 +19,8 @@ namespace DoctorWho.web.Mappers
                 .ForMember(dest => dest.DoctorId, opt => opt.MapFrom(src => src.DoctorId));
             CreateMap<DoctorUpsertRequestDTO, Doctor>();
             CreateMap<Doctor, DoctorUpsertRequestDTO>();
+            CreateMap<EpisodeCreationRequesetDTO, Episode>();
+            CreateMap<Episode, EpisodeCreationRequesetDTO>();
             CreateMap<EpisodeDto, Episode>();
             CreateMap<Episode, EpisodeDto>();
         }
