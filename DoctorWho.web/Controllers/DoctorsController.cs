@@ -66,17 +66,17 @@ namespace DoctorWho.web.Controllers
             {
                 var updatedDoctor = _mapper.Map(doctorDto, existingDoctor);
                 _doctorRepository.UpdateDoctor(updatedDoctor);
+                var updatedDoctorDto = _mapper.Map<DoctorUpsertRequestDTO>(updatedDoctor);
+                return Ok(updatedDoctorDto);
             }
             else
             {
                 var newDoctor = _mapper.Map<Doctor>(doctorDto);
                 newDoctor.DoctorId = DoctorId;
                 _doctorRepository.CreateDoctor(newDoctor);
+                var createdDoctorDto = _mapper.Map<DoctorCreationRequestDTO>(newDoctor);
+                return Created("", createdDoctorDto);
             }
-            var upsertedDoctor = _doctorRepository.GetDoctorById(DoctorId);
-            var upsertedDoctorDto = _mapper.Map<DoctorUpsertRequestDTO>(upsertedDoctor);
-
-            return Ok(upsertedDoctorDto);
         }
 
         [HttpDelete("/{DoctorId}")]
