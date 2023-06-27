@@ -67,7 +67,7 @@ namespace DoctorWho.web.Controllers
             return episode.EpisodeId;
         }
 
-        [HttpPut("{episodeId}/{enemyId}")]
+        [HttpPut("{episodeId}/enemey/{enemyId}")]
         public ActionResult AddEnemyToEpisode(int episodeId, int enemyId)
         {
             var episode = _episodeRepository.GetEpisodeByIdWithEnimes(episodeId);
@@ -89,7 +89,7 @@ namespace DoctorWho.web.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{episodeId}/{enemyId}")]
+        [HttpDelete("{episodeId}/enemey/{enemyId}")]
         public ActionResult<int> DeleteEnmeyFromEpisode(int episodeId, int enemyId)
         {
             var episode = _episodeRepository.GetEpisodeByIdWithEnimes(episodeId);
@@ -103,6 +103,47 @@ namespace DoctorWho.web.Controllers
                 return NotFound($"Enemy with id ={enemyId} Was not found");
             }
             _episodeRepository.DeleteEnemyFromEpisode(episodeId, enemyId);
+            return Ok();
+        }
+
+        [HttpPut("{episodeId}/companions/{companionId}")]
+        public ActionResult AddCompanionToEpisode(int episodeId, int companionId)
+        {
+            var episode = _episodeRepository.GetEpisodeByIdWithCompanions(episodeId);
+            if (episode == null)
+            {
+                return NotFound($"Episode with ID {episodeId} not found.");
+            }
+
+            var companionForEpisode = episode.Companions.FirstOrDefault(
+                companion => companion.CompanionId == companionId
+            );
+
+            if (companionForEpisode == null)
+            {
+                _episodeRepository.AddCompanionToEpisode(episodeId, companionId);
+                return Ok();
+            }
+
+            return NoContent();
+        }
+
+        [HttpDelete("{episodeId}/companion/{companionId}")]
+        public ActionResult<int> DeleteCompanionFromEpisode(int episodeId, int companionId)
+        {
+            var episode = _episodeRepository.GetEpisodeByIdWithCompanions(episodeId);
+            if (episode == null)
+            {
+                return NotFound($"Episode with id = {episodeId} was not found");
+            }
+            var companionForEpisode = episode.Companions.FirstOrDefault(
+                companion => companion.CompanionId == companionId
+            );
+            if (companionForEpisode == null)
+            {
+                return NotFound($"Enemy with id ={companionId} Was not found");
+            }
+            _episodeRepository.DeleteCompanionFromEpisode(episodeId, companionId);
             return Ok();
         }
     }
