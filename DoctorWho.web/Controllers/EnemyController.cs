@@ -28,11 +28,11 @@ namespace DoctorWho.web.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<DoctorDto>> GetAllEnemies()
+        public ActionResult<List<EnemyDTO>> GetAllEnemies()
         {
             var eneimes = _enemyRepository.GetAllEnemies();
 
-            return Ok(eneimes.Select(enemey => _mapper.Map<DoctorDto>(enemey)));
+            return Ok(eneimes.Select(enemey => _mapper.Map<EnemyDTO>(enemey)));
         }
 
         [HttpPost]
