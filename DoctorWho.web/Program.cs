@@ -1,6 +1,7 @@
 using DoctorWho.Db;
 using DoctorWho.Db.Repositories;
 using DoctorWho.web.Mappers;
+using DoctorWho.web.Validators;
 using DoctorWho.Web.Validators;
 using FluentAssertions.Common;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,8 @@ builder.Services.AddScoped<EpisodeRepository>();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
 builder.Services.AddTransient<DoctorDtoValidator>();
 builder.Services.AddTransient<EpisodeDtoValidator>();
+builder.Services.AddTransient<EnemyDTOValidator>();
+
 builder.Services
     .AddControllers()
     .AddJsonOptions(options =>

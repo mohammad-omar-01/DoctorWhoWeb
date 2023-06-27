@@ -23,6 +23,8 @@ namespace DoctorWho.web.Mappers
             CreateMap<Episode, EpisodeCreationRequesetDTO>();
             CreateMap<EpisodeDto, Episode>();
             CreateMap<Episode, EpisodeDto>();
+            CreateMap<Enemy, EnemyDTO>();
+            CreateMap<EnemyDTO, Enemy>();
         }
     }
 }
